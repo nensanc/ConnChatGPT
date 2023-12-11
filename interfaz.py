@@ -3,12 +3,15 @@ from tkinter.font import Font
 from tkinter import ttk, filedialog
 import json
 import os
+from dotenv import load_dotenv
 from _source.pf_functions import pf_Object
 from _source.pdf_functions import pdf_Object
 
-# iniciamos 
+# Load environment variables from the .env file
+load_dotenv()
+api_key = os.environ.get('API_KEY')
 pf_object = pf_Object()
-pdf_object = pdf_Object()
+pdf_object = pdf_Object(api_key)
 # configuración inicial
 # Lee el contenido del archivo JSON
 ruta_completa = os.path.join(os.path.dirname(__file__), "data.json")
@@ -66,7 +69,7 @@ def procesar_entrada():
     if entrada_texto:
         editar_output(f"TU\n: {entrada_texto}")
         # Borrar el contenido de la entrada después de procesarlo
-        text_result = pdf_object.text_rule(entrada_texto)
+        text_result = pdf_object.text_rule(entrada_texto, pf_object)
         editar_output(f"GPT\n: {text_result}")
         entrada.delete("1.0", tk.END)
 def mostrar_pagina():
@@ -78,7 +81,7 @@ def mostrar_tabla():
     entrada.delete("1.0", tk.END)  # Borrar el contenido existente
     entrada.insert(tk.END, text)  # Insertar el nuevo texto
 def validar_tabla():
-    text = "Q-3. Validar en la pagina {} la tabla {} del pdf"
+    text = "Q-3. Validar en la pagina {} la tabla {} del pdf \n Comparado con el elemento con foreign key {}"
     entrada.delete("1.0", tk.END)  # Borrar el contenido existente
     entrada.insert(tk.END, text)  # Insertar el nuevo texto
 # Crear la ventana principal

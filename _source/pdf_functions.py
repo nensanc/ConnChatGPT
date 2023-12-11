@@ -3,9 +3,9 @@ import re
 from openai import OpenAI
 from pandas import DataFrame
 class pdf_Object(object):
-    def __init__(self):
+    def __init__(self, api_key):
         self.d_pdf_num_text = {} # diccionario que meustra todas las paginas. 
-        self.client = OpenAI(api_key='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')
+        self.client = OpenAI(api_key=api_key)
         self.GPT_MODEL = "gpt-4-1106-preview" #"gpt-3.5-turbo-1106"
         self.chat_history = []
     def open_pdf(self, archivo_pdf_full_name):
@@ -19,25 +19,27 @@ class pdf_Object(object):
             self.d_pdf_num_text[page_num+1] = text.strip()
         name_pdf = archivo_pdf_full_name.split('/')[-1]
         return name_pdf
-    def text_rule(self, text):
+    def text_rule(self, text, pf_object):
         if 'Q-1.' in text:
-            numbers = re.findall(r'\d+', text)
-            return self.d_pdf_num_text[int(numbers[1])]
+            numbers = re.findall(r'\{([^}]*)\}', text)
+            return self.d_pdf_num_text[int(numbers[0])]
         elif 'Q-2.' in text:
-            numbers = re.findall(r'\d+', text)
-            pdf_text = self.d_pdf_num_text[int(numbers[1])]
-            message = f"devuelve la tabla {numbers[2]} como un archivo csv separado por ; en '{pdf_text}'"
+            numbers = re.findall(r'\{([^}]*)\}', text)
+            pdf_text = self.d_pdf_num_text[int(numbers[0])]
+            message = f"devuelve la tabla {numbers[1]} como un archivo csv separado por ; en '{pdf_text}'"
             return self.chastGPTMessage(message)
         elif 'Q-3.' in text:
-            numbers = re.findall(r'\d+', text)
-            pdf_text = self.d_pdf_num_text[int(numbers[1])]
-            message = f"devuelve la tabla {numbers[2]} como un archivo csv separado por ; en '{pdf_text}'"
+            numbers = re.findall(r'\{([^}]*)\}', text)
+            pdf_text = self.d_pdf_num_text[int(numbers[0])]
+            message = f"devuelve la tabla {numbers[1]} como un archivo csv separado por ; en '{pdf_text}'"
             tabla_text = self.chastGPTMessage(message)
             datos = []
             for line in tabla_text.split('\n'):
                 if len(line.split(';'))>1:
                     datos.append(line.split(';'))
             df = DataFrame(datos)
+            dict_values = pf_object.get_paramter_dict(numbers[2])
+            print(dict_values)
             return str(df)
 
     def chastGPTMessage(self, message):
