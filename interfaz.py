@@ -67,10 +67,10 @@ def procesar_entrada():
     entrada_texto = entrada.get("1.0", tk.END).strip()
     # Procesar la entrada como desees
     if entrada_texto:
-        editar_output(f"TU\n: {entrada_texto}")
+        editar_output(f"TU\n{entrada_texto}")
         # Borrar el contenido de la entrada después de procesarlo
         text_result = pdf_object.text_rule(entrada_texto, pf_object)
-        editar_output(f"GPT\n: {text_result}")
+        editar_output(f"GPT\n{text_result}")
         entrada.delete("1.0", tk.END)
 def mostrar_pagina():
     text = "Q-1. Mostrar la pagina {} del pdf"
@@ -125,7 +125,7 @@ menu_functions.add_command(label="Mostrar una pagina", command=mostrar_pagina)
 # Agregar una opción al menú de configuración con ttk
 menu_functions.add_command(label="Mostrar una tabla", command=mostrar_tabla)
 # Agregar una opción al menú de configuración con ttk
-menu_functions.add_command(label="Validar tabla", command=validar_tabla)
+menu_functions.add_command(label="Validar valores de una tabla", command=validar_tabla)
 ## Menu funciones activas ---------------------------------------------------------------
 
 

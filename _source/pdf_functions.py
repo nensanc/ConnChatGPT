@@ -38,9 +38,8 @@ class pdf_Object(object):
                 if len(line.split(';'))>1:
                     datos.append(line.split(';'))
             df = DataFrame(datos)
-            dict_values = pf_object.get_paramter_dict(numbers[2])
-            print(dict_values)
-            return str(df)
+            print(str(df))
+            return DataFrame(pf_object.validate(numbers[2], df))
 
     def chastGPTMessage(self, message):
         self.chat_history.append({"role": "user", "content": message})
