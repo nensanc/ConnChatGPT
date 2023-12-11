@@ -64,16 +64,23 @@ def procesar_entrada():
     entrada_texto = entrada.get("1.0", tk.END).strip()
     # Procesar la entrada como desees
     if entrada_texto:
-        editar_output(f"TU: {entrada_texto}")
+        editar_output(f"TU\n: {entrada_texto}")
         # Borrar el contenido de la entrada después de procesarlo
         text_result = pdf_object.text_rule(entrada_texto)
-        editar_output(f"GPT: {text_result}")
+        editar_output(f"GPT\n: {text_result}")
         entrada.delete("1.0", tk.END)
-def mostra_pagina():
-    text = "Mostrar la pagina {} del pdf"
+def mostrar_pagina():
+    text = "Q-1. Mostrar la pagina {} del pdf"
     entrada.delete("1.0", tk.END)  # Borrar el contenido existente
     entrada.insert(tk.END, text)  # Insertar el nuevo texto
-
+def mostrar_tabla():
+    text = "Q-2. Mostrar en la pagina {} la tabla {} del pdf"
+    entrada.delete("1.0", tk.END)  # Borrar el contenido existente
+    entrada.insert(tk.END, text)  # Insertar el nuevo texto
+def validar_tabla():
+    text = "Q-3. Validar en la pagina {} la tabla {} del pdf"
+    entrada.delete("1.0", tk.END)  # Borrar el contenido existente
+    entrada.insert(tk.END, text)  # Insertar el nuevo texto
 # Crear la ventana principal
 ventana = tk.Tk()
 ventana.title("Revisión de Modelos con ChatGPT")
@@ -109,11 +116,13 @@ if datos_usuario['ruta_pf']:
 ## Menu funciones activas ---------------------------------------------------------------
 # Crear un menú desplegable llamado "Configuración" con ttk
 menu_functions = tk.Menu(menubar, tearoff=0,)
-menubar.add_cascade(label="Funciones disponibles", menu=menu_functions)
+menubar.add_cascade(label="Funciones Disponibles", menu=menu_functions)
 # Agregar una opción al menú de configuración con ttk
-menu_functions.add_command(label="Mostrar una pagina", command=mostra_pagina)
+menu_functions.add_command(label="Mostrar una pagina", command=mostrar_pagina)
 # Agregar una opción al menú de configuración con ttk
-menu_functions.add_command(label="Mostrar una pagina", command=mostra_pagina)
+menu_functions.add_command(label="Mostrar una tabla", command=mostrar_tabla)
+# Agregar una opción al menú de configuración con ttk
+menu_functions.add_command(label="Validar tabla", command=validar_tabla)
 ## Menu funciones activas ---------------------------------------------------------------
 
 

@@ -1,7 +1,7 @@
 from openai import OpenAI
 
-client = OpenAI(api_key='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')
-GPT_MODEL = "gpt-4-1106-preview" #"gpt-3.5-turbo-1106"
+client = OpenAI(api_key='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')
+GPT_MODEL = "gpt-3.5-turbo" #"gpt-3.5-turbo-1106"
 
 chat_history = []
 
